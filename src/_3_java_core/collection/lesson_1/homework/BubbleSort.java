@@ -3,13 +3,9 @@ package _3_java_core.collection.lesson_1.homework;
 import java.util.Arrays;
 
 public class BubbleSort {
-    public static void main(String[] args) {
-        bubbleSort(new int[]{44, 77, 122, 4, 11, 3, 17, 54, 33, 2, 7, 8, 1, 15, 6, 7, 9, 12});
-    }
     //сложность алгоритма O(n^2)
-    public static void bubbleSort(int[] arr) {
+    public static int[] bubbleSortOld(int[] arr) {
         int len = arr.length;
-        int cnt = 0;
         boolean complete;
         do {
             complete = true;
@@ -21,8 +17,21 @@ public class BubbleSort {
                     complete = false;
                 }
             }
-            cnt++;
         } while (!complete);
-        System.out.println(Arrays.toString(arr) + " " + cnt);
+        return arr;
+    }
+
+    public static int[] bubbleSort(int[] arr) {
+        int n = arr.length;
+        for (int i = 0; i < n - 1; i++) {
+            for (int j = 1; j < n - 1; j++) {
+                if (arr[j - 1] > arr[j]) {
+                    int temp = arr[j];
+                    arr[j] = arr[j - 1];
+                    arr[j - 1] = temp;
+                }
+            }
+        }
+        return arr;
     }
 }

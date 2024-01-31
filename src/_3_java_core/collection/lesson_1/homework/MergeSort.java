@@ -3,15 +3,8 @@ package _3_java_core.collection.lesson_1.homework;
 import java.util.Arrays;
 
 public class MergeSort {
-    public static void main(String[] args) {
-        int[] a = new int[]{1,3,5,4};
-        int[] b = new int[]{2,6,9,7};
-//        System.out.println(Arrays.toString(merge(a, b)));
-        System.out.println(Arrays.toString(sortMerge(new int[]{38, 27, 43, 3, 9, 82, 10})));
-    }
-
-    // сложность алгоритма O(log n);
-    private static int[] sortMerge(int[] arr) {
+    //сложность алгоритма O(n log(n))
+    public static int[] mergeSort(int[] arr) {
         int len = arr.length;
 
         if (len < 2) {
@@ -23,7 +16,7 @@ public class MergeSort {
         int[] firstPart = Arrays.copyOfRange(arr, 0, middle);
         int[] secondPart = Arrays.copyOfRange(arr, middle, arr.length);
 
-        return merge(sortMerge(firstPart), sortMerge(secondPart));
+        return merge(mergeSort(firstPart), mergeSort(secondPart));
     }
 
     private static int[] merge(int[] arr1, int[] arr2) {
