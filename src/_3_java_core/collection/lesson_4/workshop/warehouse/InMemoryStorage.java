@@ -3,6 +3,7 @@ package _3_java_core.collection.lesson_4.workshop.warehouse;
 import _3_java_core.collection.lesson_4.workshop.warehouse.exceptions.ItemNotFoundException;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class InMemoryStorage implements Storage {
@@ -25,12 +26,23 @@ public class InMemoryStorage implements Storage {
     }
 
     @Override
-    public void containsItem(String id) {
-
+    public boolean containsItem(String id) {
+        return items.containsKey(id);
     }
 
     @Override
-    public Wheel removeItem(String id) {
-        return null;
+    public Wheel removeItem(String id) throws ItemNotFoundException {
+        Wheel remove = items.remove(id);
+        if (remove == null) {
+            throw new ItemNotFoundException(id);
+        }
+        return remove;
+    }
+
+    @Override
+    public void putAllItems(List<Wheel> items) {
+        for (Wheel item : items) {
+            putItem(item);
+        }
     }
 }
