@@ -12,7 +12,7 @@ import static _3_java_core.collection.lesson_1.homework.SelectSort.selectSortAsc
 public class Main {
 
     public static void main(String[] args) {
-        int arraySize = 100000;
+        int arraySize = 12;
         int[] array = new int[arraySize];
 
         //время выполнения Arrays.sort, 3 замера, мс:
