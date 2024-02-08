@@ -54,6 +54,20 @@ class BasicAnalyticsTest {
     }
 
     @Test
+    void getAggregationByCategoriesAndPlaceSingleRequest() {
+        Wheel wheel = new Wheel("1", "hallapelita", "summer", "A", 5);
+        Wheel winter = new Wheel("2", "hallapelita", "winter", "A", 5);
+        Wheel winter2 = new Wheel("21", "hallapelita", "winter", "A", 5);
+        Wheel winter3 = new Wheel("22", "hallapelita", "winter", "B", 5);
+        Wheel allSeason = new Wheel("3", "hallapelita", "allSeason", "A", 5);
+        storage.putAllItems(List.of(wheel, winter, winter2, winter3, allSeason));
+
+        Integer quantity = analytics.getAggregationByCategoryAndPlace(new CategoryAndPlace("winter", "A"));
+
+        Assertions.assertEquals(10, quantity);
+    }
+
+    @Test
     void getTotalCount() {
         Wheel wheel = new Wheel("1", "hallapelita", "summer", "A", 5);
         Wheel winter = new Wheel("2", "hallapelita", "winter", "A", 5);

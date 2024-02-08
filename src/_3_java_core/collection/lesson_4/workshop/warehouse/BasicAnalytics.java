@@ -35,6 +35,18 @@ public class BasicAnalytics implements Analytics {
     }
 
     @Override
+    public Integer getAggregationByCategoryAndPlace(CategoryAndPlace categoryAndPlace) {
+        Integer quantity = 0;
+        Map<String, Wheel> storedItems = storage.getAllItems();
+        for (Wheel wheel : storedItems.values()) {
+            if (wheel.category().equals(categoryAndPlace.category()) && wheel.place().equals(categoryAndPlace.place())) {
+                quantity += wheel.quantity();
+            }
+        }
+        return quantity;
+    }
+
+    @Override
     public Integer getTotalCount() {
         return storage.getAllItems().values().stream().map(wheel -> wheel.quantity()).mapToInt(Integer::intValue).sum();
     }

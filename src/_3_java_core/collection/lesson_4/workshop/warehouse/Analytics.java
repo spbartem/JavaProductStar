@@ -10,5 +10,7 @@ public interface Analytics {
 
     Map<CategoryAndPlace, Integer> getAggregationByCategoriesAndPlace();
 
+    Integer getAggregationByCategoryAndPlace(CategoryAndPlace categoryAndPlace);
+
     Integer getTotalCount();
 }
