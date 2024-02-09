@@ -22,7 +22,7 @@ public class BasicAnalytics implements Analytics {
     }
 
     @Override
-    public Map<CategoryAndPlace, Integer> getAggregationByCategoriesAndPlace() {
+    public Map<CategoryAndPlace, Integer> getAggregationByCategoryAndPlace() {
         Map<CategoryAndPlace, Integer> aggregations = new HashMap<>();
         Map<String, Wheel> storedItems = storage.getAllItems();
         for (Wheel wheel : storedItems.values()) {

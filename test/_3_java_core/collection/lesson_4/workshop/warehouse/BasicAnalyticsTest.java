@@ -8,8 +8,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 class BasicAnalyticsTest {
 
     private Analytics analytics;
@@ -48,7 +46,7 @@ class BasicAnalyticsTest {
         storage.putAllItems(List.of(wheel, winter, winter2, winter3, allSeason));
 
         Map<CategoryAndPlace, Integer> aggregationByCategoriesAndPlace =
-                analytics.getAggregationByCategoriesAndPlace();
+                analytics.getAggregationByCategoryAndPlace();
 
         Assertions.assertEquals(10, aggregationByCategoriesAndPlace.get(new CategoryAndPlace("winter", "A")));
     }

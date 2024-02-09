@@ -8,7 +8,7 @@ record CategoryAndPlace(String category, String place) {
 public interface Analytics {
     Set<String> getCategories();
 
-    Map<CategoryAndPlace, Integer> getAggregationByCategoriesAndPlace();
+    Map<CategoryAndPlace, Integer> getAggregationByCategoryAndPlace();
 
     Integer getAggregationByCategoryAndPlace(CategoryAndPlace categoryAndPlace);
 

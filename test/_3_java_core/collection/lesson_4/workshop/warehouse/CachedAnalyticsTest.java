@@ -17,17 +17,28 @@ class CachedAnalyticsTest {
 
     @Test
     void callOnceForRepeatingRequests() {
-        CategoryAndPlace request = new CategoryAndPlace("winter", "A");
+        CategoryAndPlace request1 = new CategoryAndPlace("winter", "A");
+        CategoryAndPlace request2 = new CategoryAndPlace("winter", "B");
+        CategoryAndPlace request3 = new CategoryAndPlace("summer", "A");
 
-        Integer aggregationByCategoriesAndPlace = analytics.getAggregationByCategoriesAndPlace(request);
+        // Integer aggregationByCategoriesAndPlace = analytics.getAggregationByCategoryAndPlace(request1);
+        // Assertions.assertEquals(10, aggregationByCategoriesAndPlace);
 
-        Assertions.assertEquals(10, aggregationByCategoriesAndPlace);
+        analytics.getAggregationByCategoryAndPlace(request1);
+        analytics.getAggregationByCategoryAndPlace(request2);
+        analytics.getAggregationByCategoryAndPlace(request1);
 
-        analytics.getAggregationByCategoriesAndPlace(request);
-        analytics.getAggregationByCategoriesAndPlace(request);
-        analytics.getAggregationByCategoriesAndPlace(request);
+        Assertions.assertEquals(2, storage.calls);
 
-        Assertions.assertEquals(1, storage.calls);
+        analytics.getAggregationByCategoryAndPlace(request3);
+        Assertions.assertEquals(3, storage.calls);
+
+        analytics.getAggregationByCategoryAndPlace(request1);
+        Assertions.assertEquals(3, storage.calls);
+
+        analytics.getAggregationByCategoryAndPlace(request2);
+        Assertions.assertEquals(4, storage.calls);
+
     }
 
     private class MockStorage implements Storage {

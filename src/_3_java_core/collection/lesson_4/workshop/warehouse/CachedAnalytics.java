@@ -5,7 +5,7 @@ import java.util.Map;
 import java.util.Set;
 
 public class CachedAnalytics implements Analytics {
-    private final Map<CachedAnalytics, Integer> cache = new LRUCache<>(2);
+    private final Map<CategoryAndPlace, Integer> cache = new LRUCache<>(2);
 
     private BasicAnalytics basicAnalytics;
 
@@ -19,8 +19,8 @@ public class CachedAnalytics implements Analytics {
     }
 
     @Override
-    public Map<CategoryAndPlace, Integer> getAggregationByCategoriesAndPlace() {
-        return basicAnalytics.getAggregationByCategoriesAndPlace();
+    public Map<CategoryAndPlace, Integer> getAggregationByCategoryAndPlace() {
+        return basicAnalytics.getAggregationByCategoryAndPlace();
     }
 
     @Override
