@@ -12,22 +12,22 @@ public class BasicAnalytics implements Analytics {
 
     @Override
     public Set<String> getCategories() {
-        Set<String> categories = new HashSet<>();
-        for (Wheel wheel : storage.getAllItems().values()){
-            categories.add(wheel.category());
+            Set<String> categories = new HashSet<>();
+            for (Wheel wheel : storage.getAllItems().values()){
+                categories.add(wheel.category());
+            }
+            return categories;
+
+//            return storage.getAllItems().values().stream().map(item -> item.category()).collect(Collectors.toSet());
         }
-        return categories;
 
-        // return storage.getAllItems().values().stream().map(item -> item.category()).collect(Collectors.toSet());
-    }
-
-    @Override
-    public Map<CategoryAndPlace, Integer> getAggregationByCategoryAndPlace() {
-        Map<CategoryAndPlace, Integer> aggregations = new HashMap<>();
-        Map<String, Wheel> storedItems = storage.getAllItems();
-        for (Wheel wheel : storedItems.values()) {
-            CategoryAndPlace categoryAndPlace = new CategoryAndPlace(wheel.category(), wheel.place());
-            Integer aggregation = aggregations.getOrDefault(categoryAndPlace, 0);
+        @Override
+        public Map<CategoryAndPlace, Integer> getAggregationByCategoryAndPlace() {
+            Map<CategoryAndPlace, Integer> aggregations = new HashMap<>();
+            Map<String, Wheel> storedItems = storage.getAllItems();
+            for (Wheel wheel : storedItems.values()) {
+                CategoryAndPlace categoryAndPlace = new CategoryAndPlace(wheel.category(), wheel.place());
+                Integer aggregation = aggregations.getOrDefault(categoryAndPlace, 0);
             aggregation += wheel.quantity();
             aggregations.put(categoryAndPlace, aggregation);
         }
