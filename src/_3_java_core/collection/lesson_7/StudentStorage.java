@@ -48,7 +48,7 @@ public class StudentStorage {
         return currentId;
     }
 
-    private void printAll() {
+    public void printAll() {
         System.out.println(studentStorageMap);
     }
 }
