@@ -1,5 +1,7 @@
 package _3_java_core.collection.lesson_7;
 
+import java.util.Map;
+
 public class StudentCommandHandler {
 
     private StudentStorage studentStorage = new StudentStorage();
@@ -19,6 +21,13 @@ public class StudentCommandHandler {
                 processDeleteCommand(command);
                 break;
             }
+            case STATS_BY_COURSE -> {
+                processStatsByCourseCommand(command);
+                break;
+            }
+            case SEARCH -> {
+                processSearchCommand(command);
+            }
             default -> {
                 System.out.println("Действие " + action + " не поддерживается");
             }
@@ -26,7 +35,17 @@ public class StudentCommandHandler {
 
         System.out.println("Обработка команды. Действие: "
                 + command.getAction().name()
-                + "данные: " + command.getData());
+                + ", данные: " + command.getData());
+    }
+
+    private void processSearchCommand(Command command) {
+        String surname = command.getData();
+        studentStorage.search(surname);
+    }
+
+    private void processStatsByCourseCommand(Command command) {
+        Map<String, Long> data = studentStorage.getCountByCourse();
+        studentStorage.printMap(data);
     }
 
     private void processCreateCommand(Command command) {
