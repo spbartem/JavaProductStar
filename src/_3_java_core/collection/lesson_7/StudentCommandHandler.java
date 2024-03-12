@@ -86,6 +86,10 @@ public class StudentCommandHandler {
     private void processUpdateCommand(Command command) {
         String data = command.getData();
         String[] dataArray = data.split(",");
+        if (dataArray.length < 6) {
+            System.out.printf("Недостаточно сведений для обновления данных: " + dataArray.length + " из " + "6 ");
+            return;
+        }
         if (!isNumeric(dataArray[0])) {
             System.out.println("Проблемы обработки введенных данных - идентификатор, д.б. целым числом, повторите ввод");
             return;

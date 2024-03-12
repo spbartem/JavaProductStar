@@ -1,11 +1,6 @@
 package _3_java_core.collection.lesson_7;
 
-import org.w3c.dom.ls.LSOutput;
-
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class StudentStorage {
@@ -66,37 +61,40 @@ public class StudentStorage {
     }
 
     public void search(String surname) {
-        String[] data = surname.split(",");
+        List<String> data = Arrays.stream(surname.split(",")).sorted().toList();
         Integer dataLength = 0;
-        if (!surname.matches(",") && surname.replaceAll("\\W", "") != "") {
-            dataLength = data.length;
+        if (surname.replaceAll(" ", "") != "") {
+            dataLength = data.size();
         }
-        System.out.println(dataLength);
 
-        switch (dataLength) {
-            case 0 -> {
-                Set<Long> allStudentIds = studentSurnameStorage.getSurnamesTreeMap()
-                        .values()
-                        .stream()
-                        .flatMap(students -> students.stream())
-                        .collect(Collectors.toSet());
-                printSet(allStudentIds, surname);
-                break;
+        try {
+            switch (dataLength) {
+                case 0 -> {
+                    Set<Long> allStudentIds = studentSurnameStorage.getSurnamesTreeMap()
+                            .values()
+                            .stream()
+                            .flatMap(students -> students.stream())
+                            .collect(Collectors.toSet());
+                    printSet(allStudentIds, surname);
+                    break;
+                }
+                case 1 -> {
+                    Set<Long> studentsWithTheSameSurname = studentSurnameStorage.getStudentIdsBySurname(data.get(0));
+                    printSet(studentsWithTheSameSurname, surname);
+                    break;
+                }
+                case 2 -> {
+                    Set<Long> studentsInTheSurnamesRange = studentSurnameStorage
+                            .getStudentBySurnamesBetween(data.get(0), data.get(1));
+                    printSet(studentsInTheSurnamesRange, surname);
+                    break;
+                }
+                default -> {
+                    System.out.println("Введенные данные не могут быть интерпретированы");
+                }
             }
-            case 1 -> {
-                Set<Long> studentsWithTheSameSurname = studentSurnameStorage.getStudentIdsBySurname(data[0]);
-                printSet(studentsWithTheSameSurname, surname);
-                break;
-            }
-            case 2 -> {
-                Set<Long> studentsInTheSurnamesRange = studentSurnameStorage
-                        .getStudentBySurnamesBetween(data[0], data[1]);
-                printSet(studentsInTheSurnamesRange, surname);
-                break;
-            }
-            default -> {
-                System.out.println("Введенные данные не могут быть интерпретированы");
-            }
+            } catch (Exception e) {
+            System.out.println("Ошибка поиска: " + e.getMessage());
         }
     }
 
@@ -116,14 +114,12 @@ public class StudentStorage {
     }
 
     public void printSet(Set<Long> data, String surname) {
-        if (data.isEmpty()) {
+        if (data == null) {
             System.out.println("Студенов по фамилии \"" + surname + "\" не найдено");
         }
-
-        for (Long studentId : data) {
-            Student student = studentStorageMap.get(studentId);
-            System.out.println(student);
-        }
+        data.stream().forEach(e -> {
+            System.out.println(e + " - " + studentStorageMap.get(e));
+        });
     }
 
     public Map<String, Long> getCountByCourseOld() {
