@@ -1,5 +1,8 @@
 package _3_java_core.collection.lesson_7;
 
+import org.w3c.dom.ls.LSOutput;
+
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
@@ -54,11 +57,46 @@ public class StudentStorage {
         return removed != null;
     }
 
-    public void search(String surname) {
+    public void searchWorkShop(String surname) {
         Set<Long> students = studentSurnameStorage.getStudentBySurnamesLessOrEqualsThan(surname);
         for (Long studentId : students) {
             Student student = studentStorageMap.get(studentId);
             System.out.println(student);
+        }
+    }
+
+    public void search(String surname) {
+        String[] data = surname.split(",");
+        Integer dataLength = 0;
+        if (!surname.matches(",") && surname.replaceAll("\\W", "") != "") {
+            dataLength = data.length;
+        }
+        System.out.println(dataLength);
+
+        switch (dataLength) {
+            case 0 -> {
+                Set<Long> allStudentIds = studentSurnameStorage.getSurnamesTreeMap()
+                        .values()
+                        .stream()
+                        .flatMap(students -> students.stream())
+                        .collect(Collectors.toSet());
+                printSet(allStudentIds, surname);
+                break;
+            }
+            case 1 -> {
+                Set<Long> studentsWithTheSameSurname = studentSurnameStorage.getStudentIdsBySurname(data[0]);
+                printSet(studentsWithTheSameSurname, surname);
+                break;
+            }
+            case 2 -> {
+                Set<Long> studentsInTheSurnamesRange = studentSurnameStorage
+                        .getStudentBySurnamesBetween(data[0], data[1]);
+                printSet(studentsInTheSurnamesRange, surname);
+                break;
+            }
+            default -> {
+                System.out.println("Введенные данные не могут быть интерпретированы");
+            }
         }
     }
 
@@ -73,8 +111,19 @@ public class StudentStorage {
 
     public void printMap(Map<String, Long> data) {
         data.entrySet().stream().forEach(e -> {
-            System.out.println(e.getKey() + " - " + e.getValue());;
+            System.out.println(e.getKey() + " - " + e.getValue());
         });
+    }
+
+    public void printSet(Set<Long> data, String surname) {
+        if (data.isEmpty()) {
+            System.out.println("Студенов по фамилии \"" + surname + "\" не найдено");
+        }
+
+        for (Long studentId : data) {
+            Student student = studentStorageMap.get(studentId);
+            System.out.println(student);
+        }
     }
 
     public Map<String, Long> getCountByCourseOld() {
@@ -96,5 +145,19 @@ public class StudentStorage {
                         (count1, count2) -> count1 + count2
                 ));
         return res;
+    }
+
+    public Map<String, Long> getCountByCity() {
+        Map<String, Long> res = studentStorageMap.values().stream()
+                .collect(Collectors.toMap(
+                        student -> student.getCity(),
+                        student -> 1L,
+                        (count1, count2) -> count1 + count2
+                ));
+        return res;
+    }
+
+    public Map<Long, Student> getAll() {
+        return new HashMap(studentStorageMap);
     }
 }

@@ -18,6 +18,9 @@ public class Command {
     }
 
     public String getData() {
+        if (data == null) {
+            return "-";
+        }
         return data;
     }
 }

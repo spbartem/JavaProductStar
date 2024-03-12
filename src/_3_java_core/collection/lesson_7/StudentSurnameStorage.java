@@ -23,6 +23,15 @@ public class StudentSurnameStorage {
         studentCreated(id, newSurname);
     }
 
+    public Set<Long> getStudentIdsBySurname(String surname) {
+        Set<Long> res = surnamesTreeMap.get(surname);
+        return res;
+    }
+
+    public TreeMap<String, Set<Long>> getSurnamesTreeMap() {
+        return new TreeMap<>(surnamesTreeMap);
+    }
+
     /**
      * Данный метод возвращает уникальные идентификаторы студентов,
      * чьи фамилии меньше или равны переданной.
@@ -31,6 +40,15 @@ public class StudentSurnameStorage {
 
     public Set<Long> getStudentBySurnamesLessOrEqualsThan(String surname) {
         Set<Long> res = surnamesTreeMap.headMap(surname, true)
+                .values()
+                .stream()
+                .flatMap(longs -> longs.stream())
+                .collect(Collectors.toSet());
+        return res;
+    }
+
+    public Set<Long> getStudentBySurnamesBetween(String surnameFrom, String surnameTo) {
+        Set<Long> res = surnamesTreeMap.subMap(surnameFrom, true, surnameTo, true)
                 .values()
                 .stream()
                 .flatMap(longs -> longs.stream())

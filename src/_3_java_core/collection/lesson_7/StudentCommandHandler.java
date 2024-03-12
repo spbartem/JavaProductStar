@@ -25,6 +25,10 @@ public class StudentCommandHandler {
                 processStatsByCourseCommand(command);
                 break;
             }
+            case STATS_BY_CITY -> {
+                processStatsByCityCommand(command);
+                break;
+            }
             case SEARCH -> {
                 processSearchCommand(command);
             }
@@ -38,6 +42,11 @@ public class StudentCommandHandler {
                 + ", данные: " + command.getData());
     }
 
+    private void processSearchCommandWorkShop(Command command) {
+        String surname = command.getData();
+        studentStorage.searchWorkShop(surname);
+    }
+
     private void processSearchCommand(Command command) {
         String surname = command.getData();
         studentStorage.search(surname);
@@ -45,6 +54,11 @@ public class StudentCommandHandler {
 
     private void processStatsByCourseCommand(Command command) {
         Map<String, Long> data = studentStorage.getCountByCourse();
+        studentStorage.printMap(data);
+    }
+
+    private void processStatsByCityCommand(Command command) {
+        Map<String, Long> data = studentStorage.getCountByCity();
         studentStorage.printMap(data);
     }
 
@@ -57,7 +71,13 @@ public class StudentCommandHandler {
         student.setName(dataArray[1]);
         student.setCourse(dataArray[2]);
         student.setCity(dataArray[3]);
-        student.setAge(Integer.valueOf(dataArray[4]));
+
+        try {
+            student.setAge(Integer.valueOf(dataArray[4]));
+        } catch (Exception e) {
+            System.out.println("Проблемы обработки введенных данных - возраст, д.б. целым числом, повторите ввод");
+            return;
+        }
 
         studentStorage.createStudent(student);
         studentStorage.printAll();
@@ -66,13 +86,22 @@ public class StudentCommandHandler {
     private void processUpdateCommand(Command command) {
         String data = command.getData();
         String[] dataArray = data.split(",");
+        if (!isNumeric(dataArray[0])) {
+            System.out.println("Проблемы обработки введенных данных - идентификатор, д.б. целым числом, повторите ввод");
+            return;
+        }
         Long id = Long.valueOf(dataArray[0]);
+        if (!isContainsKey(id)) {return;}
 
         Student student = new Student();
         student.setSurname(dataArray[1]);
         student.setName(dataArray[2]);
         student.setCourse(dataArray[3]);
         student.setCity(dataArray[4]);
+        if (!isNumeric(dataArray[5])) {
+            System.out.println("Проблемы обработки введенных данных - возраст, д.б. целым числом, повторите ввод");
+            return;
+        }
         student.setAge(Integer.valueOf(dataArray[5]));
 
         studentStorage.updateStudent(id, student);
@@ -80,10 +109,29 @@ public class StudentCommandHandler {
     }
 
     private void processDeleteCommand(Command command) {
+
         String data = command.getData();
+        if (!isNumeric(data)) {
+            System.out.println("Проблемы обработки введенных данных - идентификатор, д.б. целым числом, повторите ввод");
+            return;
+        }
         Long id = Long.valueOf(data);
+        if (!isContainsKey(id)) {return;}
 
         studentStorage.deleteStudent(id);
         studentStorage.printAll();
+    }
+
+    private boolean isNumeric(String string) {
+        return string.matches("\\d+");
+    }
+
+    private boolean isContainsKey(Long id) {
+        boolean res = studentStorage.getAll().containsKey(id);
+        if (!res) {
+            System.out.println("Студент с данным индентификатором отсутствует, повторите ввод");
+            studentStorage.printAll();
+        }
+        return res;
     }
 }
