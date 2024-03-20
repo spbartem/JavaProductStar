@@ -1,4 +1,4 @@
-package _3_java_core.multithreading_network.lesson_1.workshop.adapter;
+package _3_java_core.multithreading_network.lesson_1.workshop.pattern.adapter;
 
 public interface Usb {
     void connectWithUsbCable();

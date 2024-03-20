@@ -1,4 +1,4 @@
-package _3_java_core.multithreading_network.lesson_1.workshop.decorator;
+package _3_java_core.multithreading_network.lesson_1.workshop.pattern.decorator;
 
 /**
  * Паттерн Декоратор - шаблон проектирования,
